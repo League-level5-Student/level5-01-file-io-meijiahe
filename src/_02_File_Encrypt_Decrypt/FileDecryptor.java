@@ -1,5 +1,6 @@
 package _02_File_Encrypt_Decrypt;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,30 +28,35 @@ public class FileDecryptor {
 	 */
 	public static void main(String[] args) {
 		String cstring = "";
-		String input = JOptionPane.showInputDialog(null,"Please enter a message in the box.");
 		String key = JOptionPane.showInputDialog(null,"Please enter a key in the box.");
 		int keyy = Integer.parseInt(key);
-		
-	try {
-		FileReader fr = new FileReader("src/_02_File_Encrypt_Decrypt/encryption");
-		int c = fr.read();
-		while(c != -1){
-			System.out.print((char)c);
-			c = fr.read();
+		String word = "";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("src/_02_File_Encrypt_Decrypt/encryption"));
+			
+			String line = br.readLine();
+			while(line != null){
+				System.out.println(line);
+				word +=line;
+				line = br.readLine();
+			}
+			
+			br.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		fr.close();
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	char [] chars = input.toCharArray();
+
+	char [] chars = word.toCharArray();
 	for (char c: chars) {
 		if (c!=32) {
-			c+=keyy;
+			c-=keyy;
 		}
 		if (!Character.isLetter(c)&&c!=32) {
-			c-=26;
+			c+=26;
 		}
 		cstring += c;
 	}
